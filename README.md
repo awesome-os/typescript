@@ -41,3 +41,13 @@ console.log(out.outputText);
   - In-process `ts.transpileModule`: **`86.2 ms`**
   - **Zero-AST Semantic Lookup + Ghost CAS (warm, 60/60 hits):** **`5.58 ms`** (**`25.6×` faster** than warm typecheck / **`37.5×` faster** than cold on 60 modules; scales linearly to **100×+** on large monorepos)
 - **Unified Ghost CAS Index:** [`https://raw.githubusercontent.com/awesome-os/b8g-ghost/main/manifests/index.json`](https://raw.githubusercontent.com/awesome-os/b8g-ghost/main/manifests/index.json)
+
+## Quick Install & Run (Windows / Linux / macOS)
+
+```sh
+# Install globally via awesome-os/pnpm (all platforms)
+pnpm add -g github:awesome-os/typescript
+
+# Run directly (all platforms)
+tsc --help
+```
