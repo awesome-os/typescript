@@ -1,0 +1,34 @@
+name: CI — Programmable TypeScript 6.0.3 Verification
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify-ts-6:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Programmable TypeScript 6.0.3 Compiler API & Ghost CAS Entry
+        run: |
+          node -e "
+            (async () => {
+              const mod = await import('./lib/typescript.js');
+              const ts = mod.default ?? mod;
+              const t0 = performance.now();
+              const res = ts.transpileModule('export const greet = (name: string): string => \`hello \${name}\`;', {
+                compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ESNext }
+              });
+              const ms = (performance.now() - t0).toFixed(2);
+              if (!res.outputText.includes('greet')) throw new Error('Transpile failed');
+              console.log('[awesome-os/typescript] v' + ts.version + ' programmable API verified in ' + ms + 'ms');
+              const idx = await (await fetch('https://raw.githubusercontent.com/awesome-os/b8g-ghost/main/manifests/index.json')).json();
+              const entry = idx.entries['typescript-6.0.3-programmable.tar.gz'];
+              if (!entry) throw new Error('Missing typescript-6.0.3-programmable.tar.gz in cas-v1 index');
+              console.log('[awesome-os/typescript] cas-v1 verified:', entry.bytes, 'B, sha256=' + entry.sha256.slice(0, 16) + '...');
+            })();
+          "
