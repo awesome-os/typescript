@@ -1450,10 +1450,24 @@ const intrinsicTypeKinds: ReadonlyMap<string, IntrinsicTypeKind> = new Map(Objec
 
 const SymbolLinks = class implements SymbolLinks {
     declare _symbolLinksBrand: any;
+    type: Type | undefined = undefined;
+    declaredType: Type | undefined = undefined;
+    checkFlags: CheckFlags = CheckFlags.None;
+    target: Symbol | undefined = undefined;
+    mapper: TypeMapper | undefined = undefined;
+    referenced: boolean | undefined = undefined;
+    exportsChecked: boolean | undefined = undefined;
+    typeParametersChecked: boolean | undefined = undefined;
+    isDiscriminantProperty: boolean | undefined = undefined;
 };
 
 function NodeLinks(this: NodeLinks) {
     this.flags = NodeCheckFlags.None;
+    this.resolvedType = undefined;
+    this.resolvedSignature = undefined;
+    this.resolvedSymbol = undefined;
+    this.effectsSignature = undefined;
+    this.jsxFlags = JsxFlags.None;
 }
 
 /** @internal */
@@ -16933,8 +16947,7 @@ export function createTypeChecker(host: TypeCheckerHost): TypeChecker {
     }
 
     function cloneTypeReference(source: TypeReference): TypeReference {
-        const type = createTypeWithSymbol(source.flags, source.symbol) as TypeReference;
-        type.objectFlags = source.objectFlags;
+        const type = createObjectType(source.objectFlags, source.symbol) as TypeReference;
         type.target = source.target;
         type.resolvedTypeArguments = source.resolvedTypeArguments;
         return type;

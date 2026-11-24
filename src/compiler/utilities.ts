@@ -8489,6 +8489,11 @@ function Symbol(this: Symbol, flags: SymbolFlags, name: __String): void {
 function Type(this: Type, checker: TypeChecker, flags: TypeFlags): void {
     // Note: if modifying this, be sure to update TypeObject in src/services/services.ts
     this.flags = flags;
+    this.id = 0;
+    this.symbol = undefined!;
+    (this as ObjectFlagsType).objectFlags = ObjectFlags.None;
+    this.aliasSymbol = undefined;
+    this.aliasTypeArguments = undefined;
     if (Debug.isDebugging || tracing) {
         this.checker = checker;
     }
@@ -8497,6 +8502,20 @@ function Type(this: Type, checker: TypeChecker, flags: TypeFlags): void {
 function Signature(this: Signature, checker: TypeChecker, flags: SignatureFlags): void {
     // Note: if modifying this, be sure to update SignatureObject in src/services/services.ts
     this.flags = flags;
+    this.declaration = undefined;
+    this.typeParameters = undefined;
+    this.parameters = undefined!;
+    this.thisParameter = undefined;
+    this.resolvedReturnType = undefined;
+    this.resolvedTypePredicate = undefined;
+    this.minArgumentCount = 0;
+    this.target = undefined;
+    this.mapper = undefined;
+    this.compositeSignatures = undefined;
+    this.compositeKind = undefined;
+    this.erasedSignatureCache = undefined;
+    this.canonicalSignatureCache = undefined;
+    this.optionalCallSignatureCache = undefined;
     if (Debug.isDebugging) {
         this.checker = checker;
     }
@@ -8509,11 +8528,11 @@ function Node(this: Mutable<Node>, kind: SyntaxKind, pos: number, end: number): 
     this.kind = kind;
     this.id = 0;
     this.flags = NodeFlags.None;
-    this.modifierFlagsCache = ModifierFlags.None;
     this.transformFlags = TransformFlags.None;
     this.parent = undefined!;
     this.original = undefined;
     this.emitNode = undefined;
+    this.modifierFlagsCache = ModifierFlags.None;
 }
 
 function Token(this: Mutable<Node>, kind: SyntaxKind, pos: number, end: number): void {
@@ -8525,6 +8544,7 @@ function Token(this: Mutable<Node>, kind: SyntaxKind, pos: number, end: number):
     this.flags = NodeFlags.None;
     this.transformFlags = TransformFlags.None;
     this.parent = undefined!;
+    this.original = undefined;
     this.emitNode = undefined;
 }
 

@@ -2113,8 +2113,10 @@ export function createProgram(_rootNamesOrOptions: readonly string[] | CreatePro
     }
 
     function getRedirectReferenceForResolution(file: SourceFile) {
-        const redirect = getRedirectFromSourceFile(file.originalFileName);
-        if (redirect || !isDeclarationFileName(file.originalFileName)) return redirect?.resolvedRef;
+        const origName = file.originalFileName ?? file.fileName;
+        if (!origName) return undefined;
+        const redirect = getRedirectFromSourceFile(origName);
+        if (redirect || !isDeclarationFileName(origName)) return redirect?.resolvedRef;
 
         // The originalFileName could not be actual source file name if file found was d.ts from referecned project
         // So in this case try to look up if this is output from referenced project, if it is use the redirected project in that case

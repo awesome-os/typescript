@@ -105,6 +105,7 @@ try {
   for (const f of files) {
     const src = readFileSync(f, 'utf8');
     const out = ts.transpileModule(src, {
+      fileName: f,
       compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ESNext },
     });
     const key = semanticKey(src);

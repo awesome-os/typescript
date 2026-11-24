@@ -2427,6 +2427,186 @@ export function createScanner(
         if (isIdentifierStart(ch, languageVersion)) {
             pos += charSize(ch);
             while (pos < end && isIdentifierPart(ch = codePointUnchecked(pos), languageVersion)) pos += charSize(ch);
+            if (ch !== CharacterCodes.backslash && tokenFlags === TokenFlags.None) {
+                const len = pos - tokenStart;
+                if (len >= 2 && len <= 9) {
+                    const c0 = text.charCodeAt(tokenStart);
+                    if (c0 >= CharacterCodes.a && c0 <= CharacterCodes.z) {
+                        switch (len) {
+                            case 2:
+                                if (c0 === CharacterCodes.i) {
+                                    const c1 = text.charCodeAt(tokenStart + 1);
+                                    if (c1 === CharacterCodes.f) {
+                                        tokenValue = "if";
+                                        return token = SyntaxKind.IfKeyword;
+                                    }
+                                    if (c1 === CharacterCodes.n) {
+                                        tokenValue = "in";
+                                        return token = SyntaxKind.InKeyword;
+                                    }
+                                }
+                                else if (c0 === CharacterCodes.o && text.charCodeAt(tokenStart + 1) === CharacterCodes.f) {
+                                    tokenValue = "of";
+                                    return token = SyntaxKind.OfKeyword;
+                                }
+                                else if (c0 === CharacterCodes.a && text.charCodeAt(tokenStart + 1) === CharacterCodes.s) {
+                                    tokenValue = "as";
+                                    return token = SyntaxKind.AsKeyword;
+                                }
+                                break;
+                            case 3:
+                                if (c0 === CharacterCodes.f && text.charCodeAt(tokenStart + 1) === CharacterCodes.o && text.charCodeAt(tokenStart + 2) === CharacterCodes.r) {
+                                    tokenValue = "for";
+                                    return token = SyntaxKind.ForKeyword;
+                                }
+                                else if (c0 === CharacterCodes.l && text.charCodeAt(tokenStart + 1) === CharacterCodes.e && text.charCodeAt(tokenStart + 2) === CharacterCodes.t) {
+                                    tokenValue = "let";
+                                    return token = SyntaxKind.LetKeyword;
+                                }
+                                else if (c0 === CharacterCodes.v && text.charCodeAt(tokenStart + 1) === CharacterCodes.a && text.charCodeAt(tokenStart + 2) === CharacterCodes.r) {
+                                    tokenValue = "var";
+                                    return token = SyntaxKind.VarKeyword;
+                                }
+                                else if (c0 === CharacterCodes.n && text.charCodeAt(tokenStart + 1) === CharacterCodes.e && text.charCodeAt(tokenStart + 2) === CharacterCodes.w) {
+                                    tokenValue = "new";
+                                    return token = SyntaxKind.NewKeyword;
+                                }
+                                break;
+                            case 4:
+                                if (c0 === CharacterCodes.t) {
+                                    const c1 = text.charCodeAt(tokenStart + 1);
+                                    if (c1 === CharacterCodes.h && text.charCodeAt(tokenStart + 2) === CharacterCodes.i && text.charCodeAt(tokenStart + 3) === CharacterCodes.s) {
+                                        tokenValue = "this";
+                                        return token = SyntaxKind.ThisKeyword;
+                                    }
+                                    if (c1 === CharacterCodes.r && text.charCodeAt(tokenStart + 2) === CharacterCodes.u && text.charCodeAt(tokenStart + 3) === CharacterCodes.e) {
+                                        tokenValue = "true";
+                                        return token = SyntaxKind.TrueKeyword;
+                                    }
+                                    if (c1 === CharacterCodes.y && text.charCodeAt(tokenStart + 2) === CharacterCodes.p && text.charCodeAt(tokenStart + 3) === CharacterCodes.e) {
+                                        tokenValue = "type";
+                                        return token = SyntaxKind.TypeKeyword;
+                                    }
+                                }
+                                else if (c0 === CharacterCodes.v && text.charCodeAt(tokenStart + 1) === CharacterCodes.o && text.charCodeAt(tokenStart + 2) === CharacterCodes.i && text.charCodeAt(tokenStart + 3) === CharacterCodes.d) {
+                                    tokenValue = "void";
+                                    return token = SyntaxKind.VoidKeyword;
+                                }
+                                else if (c0 === CharacterCodes.n && text.charCodeAt(tokenStart + 1) === CharacterCodes.u && text.charCodeAt(tokenStart + 2) === CharacterCodes.l && text.charCodeAt(tokenStart + 3) === CharacterCodes.l) {
+                                    tokenValue = "null";
+                                    return token = SyntaxKind.NullKeyword;
+                                }
+                                else if (c0 === CharacterCodes.e && text.charCodeAt(tokenStart + 1) === CharacterCodes.l && text.charCodeAt(tokenStart + 2) === CharacterCodes.s && text.charCodeAt(tokenStart + 3) === CharacterCodes.e) {
+                                    tokenValue = "else";
+                                    return token = SyntaxKind.ElseKeyword;
+                                }
+                                else if (c0 === CharacterCodes.f && text.charCodeAt(tokenStart + 1) === CharacterCodes.r && text.charCodeAt(tokenStart + 2) === CharacterCodes.o && text.charCodeAt(tokenStart + 3) === CharacterCodes.m) {
+                                    tokenValue = "from";
+                                    return token = SyntaxKind.FromKeyword;
+                                }
+                                else if (c0 === CharacterCodes.c && text.charCodeAt(tokenStart + 1) === CharacterCodes.a && text.charCodeAt(tokenStart + 2) === CharacterCodes.s && text.charCodeAt(tokenStart + 3) === CharacterCodes.e) {
+                                    tokenValue = "case";
+                                    return token = SyntaxKind.CaseKeyword;
+                                }
+                                break;
+                            case 5:
+                                if (c0 === CharacterCodes.c) {
+                                    const c1 = text.charCodeAt(tokenStart + 1);
+                                    if (c1 === CharacterCodes.o && text.charCodeAt(tokenStart + 2) === CharacterCodes.n && text.charCodeAt(tokenStart + 3) === CharacterCodes.s && text.charCodeAt(tokenStart + 4) === CharacterCodes.t) {
+                                        tokenValue = "const";
+                                        return token = SyntaxKind.ConstKeyword;
+                                    }
+                                    if (c1 === CharacterCodes.l && text.charCodeAt(tokenStart + 2) === CharacterCodes.a && text.charCodeAt(tokenStart + 3) === CharacterCodes.s && text.charCodeAt(tokenStart + 4) === CharacterCodes.s) {
+                                        tokenValue = "class";
+                                        return token = SyntaxKind.ClassKeyword;
+                                    }
+                                }
+                                else if (c0 === CharacterCodes.f && text.charCodeAt(tokenStart + 1) === CharacterCodes.a && text.charCodeAt(tokenStart + 2) === CharacterCodes.l && text.charCodeAt(tokenStart + 3) === CharacterCodes.s && text.charCodeAt(tokenStart + 4) === CharacterCodes.e) {
+                                    tokenValue = "false";
+                                    return token = SyntaxKind.FalseKeyword;
+                                }
+                                else if (c0 === CharacterCodes.b && text.charCodeAt(tokenStart + 1) === CharacterCodes.r && text.charCodeAt(tokenStart + 2) === CharacterCodes.e && text.charCodeAt(tokenStart + 3) === CharacterCodes.a && text.charCodeAt(tokenStart + 4) === CharacterCodes.k) {
+                                    tokenValue = "break";
+                                    return token = SyntaxKind.BreakKeyword;
+                                }
+                                else if (c0 === CharacterCodes.a) {
+                                    const c1 = text.charCodeAt(tokenStart + 1);
+                                    if (c1 === CharacterCodes.s && text.charCodeAt(tokenStart + 2) === CharacterCodes.y && text.charCodeAt(tokenStart + 3) === CharacterCodes.n && text.charCodeAt(tokenStart + 4) === CharacterCodes.c) {
+                                        tokenValue = "async";
+                                        return token = SyntaxKind.AsyncKeyword;
+                                    }
+                                    if (c1 === CharacterCodes.w && text.charCodeAt(tokenStart + 2) === CharacterCodes.a && text.charCodeAt(tokenStart + 3) === CharacterCodes.i && text.charCodeAt(tokenStart + 4) === CharacterCodes.t) {
+                                        tokenValue = "await";
+                                        return token = SyntaxKind.AwaitKeyword;
+                                    }
+                                }
+                                break;
+                            case 6:
+                                if (c0 === CharacterCodes.r && text.charCodeAt(tokenStart + 1) === CharacterCodes.e && text.charCodeAt(tokenStart + 2) === CharacterCodes.t && text.charCodeAt(tokenStart + 3) === CharacterCodes.u && text.charCodeAt(tokenStart + 4) === CharacterCodes.r && text.charCodeAt(tokenStart + 5) === CharacterCodes.n) {
+                                    tokenValue = "return";
+                                    return token = SyntaxKind.ReturnKeyword;
+                                }
+                                else if (c0 === CharacterCodes.e && text.charCodeAt(tokenStart + 1) === CharacterCodes.x && text.charCodeAt(tokenStart + 2) === CharacterCodes.p && text.charCodeAt(tokenStart + 3) === CharacterCodes.o && text.charCodeAt(tokenStart + 4) === CharacterCodes.r && text.charCodeAt(tokenStart + 5) === CharacterCodes.t) {
+                                    tokenValue = "export";
+                                    return token = SyntaxKind.ExportKeyword;
+                                }
+                                else if (c0 === CharacterCodes.i && text.charCodeAt(tokenStart + 1) === CharacterCodes.m && text.charCodeAt(tokenStart + 2) === CharacterCodes.p && text.charCodeAt(tokenStart + 3) === CharacterCodes.o && text.charCodeAt(tokenStart + 4) === CharacterCodes.r && text.charCodeAt(tokenStart + 5) === CharacterCodes.t) {
+                                    tokenValue = "import";
+                                    return token = SyntaxKind.ImportKeyword;
+                                }
+                                else if (c0 === CharacterCodes.s) {
+                                    const c1 = text.charCodeAt(tokenStart + 1);
+                                    if (c1 === CharacterCodes.t) {
+                                        const c2 = text.charCodeAt(tokenStart + 2);
+                                        if (c2 === CharacterCodes.r && text.charCodeAt(tokenStart + 3) === CharacterCodes.i && text.charCodeAt(tokenStart + 4) === CharacterCodes.n && text.charCodeAt(tokenStart + 5) === CharacterCodes.g) {
+                                            tokenValue = "string";
+                                            return token = SyntaxKind.StringKeyword;
+                                        }
+                                        if (c2 === CharacterCodes.a && text.charCodeAt(tokenStart + 3) === CharacterCodes.t && text.charCodeAt(tokenStart + 4) === CharacterCodes.i && text.charCodeAt(tokenStart + 5) === CharacterCodes.c) {
+                                            tokenValue = "static";
+                                            return token = SyntaxKind.StaticKeyword;
+                                        }
+                                    }
+                                    if (c1 === CharacterCodes.w && text.charCodeAt(tokenStart + 2) === CharacterCodes.i && text.charCodeAt(tokenStart + 3) === CharacterCodes.t && text.charCodeAt(tokenStart + 4) === CharacterCodes.c && text.charCodeAt(tokenStart + 5) === CharacterCodes.h) {
+                                        tokenValue = "switch";
+                                        return token = SyntaxKind.SwitchKeyword;
+                                    }
+                                }
+                                else if (c0 === CharacterCodes.n && text.charCodeAt(tokenStart + 1) === CharacterCodes.u && text.charCodeAt(tokenStart + 2) === CharacterCodes.m && text.charCodeAt(tokenStart + 3) === CharacterCodes.b && text.charCodeAt(tokenStart + 4) === CharacterCodes.e && text.charCodeAt(tokenStart + 5) === CharacterCodes.r) {
+                                    tokenValue = "number";
+                                    return token = SyntaxKind.NumberKeyword;
+                                }
+                                else if (c0 === CharacterCodes.p && text.charCodeAt(tokenStart + 1) === CharacterCodes.u && text.charCodeAt(tokenStart + 2) === CharacterCodes.b && text.charCodeAt(tokenStart + 3) === CharacterCodes.l && text.charCodeAt(tokenStart + 4) === CharacterCodes.i && text.charCodeAt(tokenStart + 5) === CharacterCodes.c) {
+                                    tokenValue = "public";
+                                    return token = SyntaxKind.PublicKeyword;
+                                }
+                                break;
+                            case 7:
+                                if (c0 === CharacterCodes.b && text.charCodeAt(tokenStart + 1) === CharacterCodes.o && text.charCodeAt(tokenStart + 2) === CharacterCodes.o && text.charCodeAt(tokenStart + 3) === CharacterCodes.l && text.charCodeAt(tokenStart + 4) === CharacterCodes.e && text.charCodeAt(tokenStart + 5) === CharacterCodes.a && text.charCodeAt(tokenStart + 6) === CharacterCodes.n) {
+                                    tokenValue = "boolean";
+                                    return token = SyntaxKind.BooleanKeyword;
+                                }
+                                break;
+                            case 8:
+                                if (c0 === CharacterCodes.f && text.charCodeAt(tokenStart + 1) === CharacterCodes.u && text.charCodeAt(tokenStart + 2) === CharacterCodes.n && text.charCodeAt(tokenStart + 3) === CharacterCodes.c && text.charCodeAt(tokenStart + 4) === CharacterCodes.t && text.charCodeAt(tokenStart + 5) === CharacterCodes.i && text.charCodeAt(tokenStart + 6) === CharacterCodes.o && text.charCodeAt(tokenStart + 7) === CharacterCodes.n) {
+                                    tokenValue = "function";
+                                    return token = SyntaxKind.FunctionKeyword;
+                                }
+                                else if (c0 === CharacterCodes.r && text.charCodeAt(tokenStart + 1) === CharacterCodes.e && text.charCodeAt(tokenStart + 2) === CharacterCodes.a && text.charCodeAt(tokenStart + 3) === CharacterCodes.d && text.charCodeAt(tokenStart + 4) === CharacterCodes.o && text.charCodeAt(tokenStart + 5) === CharacterCodes.n && text.charCodeAt(tokenStart + 6) === CharacterCodes.l && text.charCodeAt(tokenStart + 7) === CharacterCodes.y) {
+                                    tokenValue = "readonly";
+                                    return token = SyntaxKind.ReadonlyKeyword;
+                                }
+                                break;
+                            case 9:
+                                if (c0 === CharacterCodes.i && text.charCodeAt(tokenStart + 1) === CharacterCodes.n && text.charCodeAt(tokenStart + 2) === CharacterCodes.t && text.charCodeAt(tokenStart + 3) === CharacterCodes.e && text.charCodeAt(tokenStart + 4) === CharacterCodes.r && text.charCodeAt(tokenStart + 5) === CharacterCodes.f && text.charCodeAt(tokenStart + 6) === CharacterCodes.a && text.charCodeAt(tokenStart + 7) === CharacterCodes.c && text.charCodeAt(tokenStart + 8) === CharacterCodes.e) {
+                                    tokenValue = "interface";
+                                    return token = SyntaxKind.InterfaceKeyword;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
             tokenValue = text.substring(tokenStart, pos);
             if (ch === CharacterCodes.backslash) {
                 tokenValue += scanIdentifierParts();

@@ -13,5 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run Programmable TypeScript 6.0.3 Benchmark & Verify Ghost CAS
-        run: node benchmark/zero-ast-vs-tsc.mts
+      - name: Run Compiler Verification Suite & Zero-AST Benchmark
+        run: |
+          node --test test/v8-compiler-opt.test.mts
+          node benchmark/zero-ast-vs-tsc.mts
