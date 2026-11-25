@@ -45,9 +45,9 @@ console.log(out.outputText);
 ## Quick Install & Run (Windows / Linux / macOS)
 
 ```sh
-# Install globally via awesome-os/pnpm (all platforms)
-pnpm add -g github:awesome-os/typescript
+# Install / hydrate from v11 CAS via holo-pm
+holo-pm install repository://github.com/awesome-os/typescript@main
 
-# Run directly (all platforms)
-tsc --help
+# Or project & run directly via holo-project (0-byte hardlink)
+holo-project "project://node/typescript?from=repository://github.com/awesome-os/typescript@main"
 ```
